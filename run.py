@@ -16,14 +16,22 @@ class VoiceGame(cocos.layer.ColorLayer):
         self.init_time = time.time()
         self.NUM_SAMPLES = 1000
         self.LEVEL = 1500
-
+        self.highest_score = 0
         self.score = 0
         self.txt_score = cocos.text.Label(u'score：0',
                                           font_name="Arial",
-                                          font_size=24,
+                                          font_size=20,
                                           color=(0, 0, 0, 255))
         self.txt_score.position = 400, 440
         self.add(self.txt_score, 99999)
+
+        self.highest_score = 0
+        self.txt_highest_score = cocos.text.Label(u'High Score：0',
+                                                  font_name="Arial",
+                                                  font_size=20,
+                                                  color=(0, 0, 0, 255))
+        self.txt_highest_score.position = 200, 440
+        self.add(self.txt_highest_score, 99999)
 
         self.voice_bar = Sprite('block.png', color=(0, 0, 255))
         self.voice_bar.position = 20, 450
@@ -68,11 +76,12 @@ class VoiceGame(cocos.layer.ColorLayer):
         volume = max(struct.unpack('1000h', string_audio_data))
         self.voice_bar.scale_x = volume / 10000.0
         volume -= config.sensitivity
-        if volume > 3000:
+        print(volume)
+        if volume > config.run:
             self.floor.x -= min((volume / 20.0), 150 * config.run_boost) * dt
             self.score += 1/10
             self.txt_score.element.text = u'score：%d' % self.score
-        if volume > 8000:
+        if volume > config.jump:
             self.object.jump((volume - 8000) / 1000 * config.jump_boost)
             self.score += 1/10
             self.txt_score.element.text = u'score：%d' % self.score
@@ -80,6 +89,9 @@ class VoiceGame(cocos.layer.ColorLayer):
 
     def reset(self):
         self.floor.x = 0
+        if self.score > self.highest_score:
+            self.highest_score = self.score
+        self.txt_highest_score.element.text = u'High score：%d' % self.highest_score
         self.score = 0
         self.txt_score.element.text = u'score: 0'
 

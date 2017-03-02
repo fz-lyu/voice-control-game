@@ -1,4 +1,4 @@
-sensitivity = 3778
+sensitivity = 6000
 run = 3000
 jump = 8000
 run_boost = 5
