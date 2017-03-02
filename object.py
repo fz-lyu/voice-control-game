@@ -1,5 +1,5 @@
 import cocos
-
+import pygame
 
 class Object(cocos.sprite.Sprite):
 
@@ -10,12 +10,15 @@ class Object(cocos.sprite.Sprite):
         self.image_anchor = 0, 0
         self.position = 100, 300
         self.schedule(self.update)
+        pygame.mixer.init()
+        self.sound_jump = pygame.mixer.Sound("jump.wav")
 
     def jump(self, h):
         if self.can_jump:
             self.y += 1
             self.speed -= max(min(h, 10), 7)
             self.can_jump = False
+            self.sound_jump.play()
 
     def land(self, y):
         if self.y > y - 30:
