@@ -4,6 +4,9 @@ the object will run or jump based on the level of volume input by microphone
 ## requirement
     cocos2
     pyaudio
+## noisedetect.py
+To detect the level of noise around you via microphone
+set the printed value to sensitivity in config.py
 ## config.py
     sensitivity: level of cancelling noise
     run: level of threshold to make object run
