@@ -1,6 +1,7 @@
 import cocos
 import pygame
 
+
 class Object(cocos.sprite.Sprite):
 
     def __init__(self):

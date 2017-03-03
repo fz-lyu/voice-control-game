@@ -11,6 +11,6 @@ class Block(cocos.sprite.Sprite):
             self.scale_x = 5
             self.scale_y = 1
         else:
-            self.scale_x = 0.5 + random.random() * 1.5
+            self.scale_x = 0.5 + random.random() * 2
             self.scale_y = min(max(y - 50 + random.random() * 100, 50), 300) / 100.0
             self.position = x + 50 + random.random() * 100, 0

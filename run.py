@@ -12,9 +12,9 @@ class VoiceGame(cocos.layer.ColorLayer):
     is_event_handler = True
 
     def __init__(self):
-        super(VoiceGame, self).__init__(255, 255, 255, 255, 800, 600)
+        super(VoiceGame, self).__init__(255, 255, 255, 255, 2000, 2000)
         self.init_time = time.time()
-        self.NUM_SAMPLES = 1000
+        self.NUM_SAMPLES = 2048
         self.LEVEL = 1500
         self.highest_score = 0
         self.score = 0
@@ -46,9 +46,13 @@ class VoiceGame(cocos.layer.ColorLayer):
         self.add(self.floor)
         pos = 0, 100
         for i in range(100):
-            b = Block(pos)
-            self.floor.add(b)
-            pos = b.x + b.width, b.height
+            b1 = Block(pos)
+            b2 = Block(pos)
+            b3 = Block(pos)
+            self.floor.add(b1)
+            self.floor.add(b2)
+            self.floor.add(b3)
+            pos = b1.x + b1.width, b1.height
 
         pa = PyAudio()
         sampling_rate = int(pa.get_device_info_by_index(0)['defaultSampleRate'])
@@ -62,7 +66,7 @@ class VoiceGame(cocos.layer.ColorLayer):
     def collide(self):
         px = self.object.x - self.floor.x
         for b in self.floor.get_children():
-            if b.x <= px + self.object.width * 0.8 and px + self.object.width * 0.2 <= b.x + b.width:
+            if b.x <= px + self.object.width * 0.9 and px + self.object.width * 0.1 <= b.x + b.width:
                 if self.object.y < b.height:
                     self.object.land(b.height)
                     break
@@ -73,8 +77,8 @@ class VoiceGame(cocos.layer.ColorLayer):
         self.score += time_temp / 10
         self.txt_score.element.text = u'score：%d' % self.score
         string_audio_data = self.stream.read(self.NUM_SAMPLES)
-        volume = max(struct.unpack('1000h', string_audio_data))
-        self.voice_bar.scale_x = volume / 10000.0
+        volume = max(struct.unpack('2048h', string_audio_data))
+        self.voice_bar.scale_x = volume / 20000.0
         volume -= config.sensitivity
         print(volume)
         if volume > config.run:
